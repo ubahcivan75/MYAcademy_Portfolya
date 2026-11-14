@@ -29,24 +29,39 @@
 
     <style>
             :root {
-                --sidebar-bg: #343B5C;
-                --sidebar-surface: #424B70;
-                --sidebar-active: #59658D;
-                --sidebar-text: #DCE2F5;
-                --sidebar-border: rgba(220, 226, 245, 0.08);
-                --bg-main: #F6F7FC;
+                --sidebar-bg: #283618; /* orman yeşili sidebar */
+                --sidebar-surface: #34452A; /* sidebar içindeki kutular */
+                --sidebar-active: #4A5A32; /* aktif menü arka planı */
+                --sidebar-text: #F0EFEB; /* krem menü yazısı */
+                --sidebar-border: rgba(240, 239, 235, 0.10);
+                --bg-main: #F0EFEB; /* Beyaz Çit – sayfa zemini */
                 --card-bg: #FFFFFF;
-                --text-primary: #29344C;
-                --text-secondary: #8490A5;
-                --primary-accent: #8276D9;
-                --primary-accent-hover: #7063cb;
-                --border-color: #E9ECF4;
-                --pastel-purple: #EEEAFE;
+                --text-primary: #283618;
+                --text-secondary: #5E6450;
+                --primary-accent: #283618; /* butonlar */
+                --primary-accent-hover: #1C2610;
+                --border-color: #D4D4D4; /* Açık Gri */
+                --pastel-purple: #E3E5D8; /* ikon kutuları, açık vurgular */
                 --radius-md: 12px;
                 --radius-lg: 16px;
-                --shadow-subtle: 0 4px 20px rgba(41, 52, 76, 0.04);
+                --shadow-subtle: 0 4px 20px rgba(40, 54, 24, 0.05);
                 --sidebar-width: 260px;
                 --transition-base: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+
+            /* Bootstrap'in mavi butonlarını da paletle uyumlu yap */
+            .btn-primary {
+                --bs-btn-bg: #283618;
+                --bs-btn-border-color: #283618;
+                --bs-btn-hover-bg: #1C2610;
+                --bs-btn-hover-border-color: #1C2610;
+                --bs-btn-active-bg: #1C2610;
+                --bs-btn-active-border-color: #1C2610;
+            }
+
+            .form-check-input:checked {
+                background-color: #283618;
+                border-color: #283618;
             }
 
             * {
@@ -75,7 +90,7 @@
             }
 
             ::-webkit-scrollbar-thumb {
-                background: #cfd6e4;
+                background: #B7B7A4;
                 border-radius: 4px;
             }
 
@@ -106,7 +121,7 @@
             .brand-mark {
                 width: 38px;
                 height: 38px;
-                background: linear-gradient(135deg, #A294F9 0%, #7664E8 100%);
+                background: linear-gradient(135deg, #B7B7A4 0%, #606C38 100%);
                 color: #fff;
                 font-weight: 800;
                 font-size: 1.2rem;
@@ -114,7 +129,7 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                box-shadow: 0 4px 12px rgba(118, 100, 232, 0.35);
+                box-shadow: 0 4px 12px rgba(40, 54, 24, 0.35);
             }
 
             .sidebar-nav {
@@ -179,7 +194,7 @@
                         bottom: 6px;
                         width: 4px;
                         border-radius: 4px;
-                        background: #A294F9;
+                        background: #B7B7A4;
                     }
 
             .sidebar-user {
@@ -196,11 +211,11 @@
                 width: 36px;
                 height: 36px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #8276D9, #E4F0FE);
+                background: linear-gradient(135deg, #E3E5D8, #B7B7A4);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #29344C;
+                color: #283618;
                 font-weight: 700;
                 font-size: 0.8rem;
                 flex-shrink: 0;
@@ -278,7 +293,7 @@
             }
 
                 .dropdown-item:hover {
-                    background: #F2F4F9;
+                    background: #E7E6E0;
                     color: var(--primary-accent);
                 }
 
@@ -314,7 +329,7 @@
 
             .breadcrumb-item + .breadcrumb-item::before {
                 content: "/";
-                color: #C3CAD9;
+                color: #B7B7A4;
             }
 
             /* ========== CONTENT (RenderBody) ========== */
@@ -346,7 +361,7 @@
 
             .form-control:focus, .form-select:focus {
                 border-color: var(--primary-accent);
-                box-shadow: 0 0 0 3px rgba(130, 118, 217, 0.14);
+                box-shadow: 0 0 0 3px rgba(40, 54, 24, 0.14);
             }
 
             /* ========== FOOTER ========== */
@@ -474,7 +489,7 @@
             <div class="user-avatar">UB</div>
             <div class="overflow-hidden">
                 <div class="fw-semibold text-white text-truncate" style="font-size: 0.83rem;">Ümit BAHÇİVAN</div>
-                <div style="font-size: 0.7rem; color: #B3BFDF;">Yönetici</div>
+                <div style="font-size: 0.7rem; color: #B7B7A4;">Yönetici</div>
             </div>
         </div>
     </aside>
