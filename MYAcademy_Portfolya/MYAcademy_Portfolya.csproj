@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Admin\Data\" />
-    <Folder Include="ViewComponents\AdminViewComponents\" />
-    <Folder Include="ViewComponents\StatisticsViewComponents\" />
+    <Folder Include="Areas\Admin\ViewComponents\" />
+    <Folder Include="Areas\Admin\Views\Shared\" />
+    <Folder Include="Views\Home\" />
   </ItemGroup>
 
 </Project>

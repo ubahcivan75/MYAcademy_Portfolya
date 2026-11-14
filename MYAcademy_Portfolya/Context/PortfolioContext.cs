@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using MYAcademy_Portfolya.Entites;
-using System.Data;
-using System.Reflection.Metadata.Ecma335;
+
+
 
 namespace MYAcademy_Portfolya.Context
 {

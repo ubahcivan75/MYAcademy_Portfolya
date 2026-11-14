@@ -25,6 +25,7 @@ namespace MYAcademy_Portfolya.Areas.Admin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult Index(Contact contact)
         {
             if (!ModelState.IsValid)
