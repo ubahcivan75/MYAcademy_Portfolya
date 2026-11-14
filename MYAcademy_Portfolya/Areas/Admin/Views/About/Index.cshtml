@@ -1,0 +1,137 @@
+﻿@model MYAcademy_Portfolya.Entites.About
+@{
+    ViewData["Title"] = "Hakkımda";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+
+
+<div class="row g-4">
+    <div class="col-lg-8">
+
+         <div class="form-card">
+            <form asp-area="Admin" asp-controller="About" asp-action="Index" method="post">
+                <input type="hidden" asp-for="AboutId" />
+
+                <div class="form-card-header">
+                    <div class="form-card-icon"><i class="bi bi-person-badge"></i></div>
+                    <div>
+                        <h5 class="mb-0 fw-bold">Hakkımda</h5>
+                        <small class="text-secondary">Hakkımda bilgilerinizi güncelleyin.</small>
+                    </div>
+                </div>
+
+                <div class="form-card-body">
+                    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label asp-for="NameSurName" class="form-label">Ad Soyad <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-person"></i>
+                                <input asp-for="NameSurName" class="form-control" placeholder="Örn: Ahmet Yılmaz" required />
+                            </div>
+                            <span asp-validation-for="NameSurName"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="JobTitle" class="form-label">Meslek <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-briefcase"></i>
+                                <input asp-for="JobTitle" class="form-control" placeholder="Örn: Full Stack Developer" required />
+                            </div>
+                            <span asp-validation-for="JobTitle"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Mail" class="form-label">E-posta <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-envelope"></i>
+                                <input asp-for="Mail" type="email" class="form-control" placeholder="ornek@mail.com" required />
+                            </div>
+                            <span asp-validation-for="Mail"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Location" class="form-label">Lokasyon <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-geo-alt"></i>
+                                <input asp-for="Location" class="form-control" placeholder="Örn: İstanbul / Türkiye" required />
+                            </div>
+                            <span asp-validation-for="Location"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="Expert" class="form-label">Uzmanlık Alanı <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-stars"></i>
+                                <input asp-for="Expert" class="form-control" placeholder="Örn: C#, ASP.NET Core, SQL Server" required />
+                            </div>
+                            <span asp-validation-for="Expert"></span>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label asp-for="OpenToWork" class="form-label">Çalışma Durumu <span class="req">*</span></label>
+                            <div class="input-icon-wrap">
+                                <i class="bi bi-briefcase-fill"></i>
+                                <select asp-for="OpenToWork" class="form-control" required>
+                                    <option value="">Seçiniz...</option>
+                                    <option value="Yeni fırsatlara açığım">Yeni fırsatlara açığım</option>
+                                    <option value="Freelance projelere açığım">Freelance projelere açığım</option>
+                                    <option value="Şu an müsait değilim">Şu an müsait değilim</option>
+                                </select>
+                            </div>
+                            <span asp-validation-for="OpenToWork"></span>
+                        </div>
+
+                        <div class="col-12">
+                            <div class="d-flex justify-content-between align-items-end">
+                                <label asp-for="Description" class="form-label">Kısaca hakkımda <span class="req">*</span></label>
+                                <span class="char-counter mb-1"><span id="charCount">0</span> / 2000</span>
+                            </div>
+                            <textarea asp-for="Description" id="messageDetail" class="form-control" rows="7" maxlength="2000"
+                                      placeholder="Kendinizi kısaca tanıtın..." required></textarea>
+                            <span asp-validation-for="Description"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-card-footer">
+                    <a asp-area="Admin" asp-controller="About" asp-action="Index" class="btn btn-soft">
+                        <i class="bi bi-arrow-left me-1"></i> Vazgeç
+                    </a>
+                    <button type="submit" class="btn btn-accent">
+                        <i class="bi bi-check2 me-1"></i> Kaydet
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="info-card">
+            <h6 class="mb-1"><i class="bi bi-info-circle me-1"></i> Bilgilendirme</h6>
+            <small class="text-white-50">Hakkınızdaki bilgileri bu alandan kaydedebilir ve güncelleyebilirsiniz.</small>
+            <div class="info-item">
+                <i class="bi bi-list-check"></i>
+                <span>Kaydettikten sonra bilgiler <strong class="text-white">portfolyo sitenizde</strong> güncel olarak görünür.</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section Scripts {
+    <script>
+        const messageInput = document.getElementById("messageDetail");
+        const charCount = document.getElementById("charCount");
+
+        function updateCount() {
+            charCount.textContent = messageInput.value.length;
+        }
+
+        messageInput.addEventListener("input", updateCount);
+        document.querySelector("form").addEventListener("reset", () => setTimeout(updateCount, 0));
+        updateCount();
+    </script>
+}

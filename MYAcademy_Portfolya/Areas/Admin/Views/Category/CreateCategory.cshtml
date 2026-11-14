@@ -1,0 +1,42 @@
+﻿@model MYAcademy_Portfolya.Entites.Category
+@{
+    ViewData["Title"] = "Kategori Ekle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="form-card">
+    <form asp-area="Admin" asp-action="CreateCategory" method="post">
+
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-plus-lg"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Yeni Kategori Ekle</h5>
+                <small class="text-secondary">Projeleri gruplamak için bir kategori oluştur.</small>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label asp-for="CategoryName" class="form-label">Kategori Adı <span class="req">*</span></label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-tag"></i>
+                        <input asp-for="CategoryName" class="form-control" placeholder="Örn: Web Uygulamaları" maxlength="50" required />
+                    </div>
+                    <span asp-validation-for="CategoryName"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card-footer">
+            <a asp-area="Admin" asp-action="Index" class="btn btn-soft">
+                <i class="bi bi-arrow-left me-1"></i> Vazgeç
+            </a>
+            <button type="submit" class="btn btn-accent">
+                <i class="bi bi-check2-circle me-1"></i> Kategoriyi Kaydet
+            </button>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,183 @@
+﻿@model List<MYAcademy_Portfolya.Entites.SkillCategory>
+@{
+    ViewData["Title"] = "Yetenek Kategorileri";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+@section Styles {
+    <style>
+        .list-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .list-card-header {
+            padding: 20px 26px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .list-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--pastel-purple);
+            color: var(--primary-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .exp-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: #FAFBFE;
+            padding: 12px 16px;
+        }
+
+        .exp-table td {
+            padding: 14px 16px;
+            font-size: 0.88rem;
+        }
+
+        .btn-accent {
+            background: var(--primary-accent);
+            border: 1px solid var(--primary-accent);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 9px 20px;
+            box-shadow: 0 4px 12px rgba(130, 118, 217, 0.25);
+        }
+
+            .btn-accent:hover {
+                background: var(--primary-accent-hover);
+                color: #fff;
+            }
+
+        .btn-soft {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 10px;
+        }
+
+            .btn-soft:hover {
+                background: #F8F9FD;
+                color: var(--primary-accent);
+            }
+
+        .btn-soft-danger {
+            background: #fff;
+            border: 1px solid #F3C9C6;
+            color: #c0342b;
+            border-radius: 10px;
+        }
+
+            .btn-soft-danger:hover {
+                background: #FDF1F0;
+                color: #a32a22;
+            }
+
+        .status-badge {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .status-active {
+            background: #E6F6EC;
+            color: #1E8449;
+        }
+
+        .status-done {
+            background: #EEF0F5;
+            color: #6B7280;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+    </style>
+}
+
+
+
+<div class="list-card">
+    <!-- BAŞLIK + EKLE BUTONU -->
+    <div class="list-card-header">
+        <div class="d-flex align-items-center gap-3">
+            <div class="list-card-icon"><i class="bi bi-briefcase"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Yetenek Kategorileri</h5>
+                <small class="text-secondary">Toplam @Model.Count kategori</small>
+            </div>
+        </div>
+
+        <a asp-area="Admin" asp-controller="SkillCategory" asp-action="CreateSkillCategory" class="btn btn-accent">
+            <i class="bi bi-plus-lg me-1"></i> Yeni Kategori Ekle
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="bi bi-briefcase fs-1 d-block mb-2"></i>
+            Henüz kategori eklenmedi.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table exp-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Sıra</th>
+                        <th>Kategori</th>
+                        <th>Yetenek Sayısı</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="text-secondary">@item.DisplayOrder</td>
+                            <td>
+                                <div class="d-flex align-items-center gap-2">
+                                    <div class="list-card-icon @item.Color" style="width:36px;height:36px;font-size:1rem;">
+                                        <i class="bi @item.Icon"></i>
+                                    </div>
+                                    <div class="fw-semibold">@item.Title</div>
+                                </div>
+                            </td>
+                            <td><span class="badge bg-light text-dark border">@item.Skills.Count yetenek</span></td>
+                            <td class="text-end text-nowrap">
+                                <a asp-action="UpdateSkillCategory" asp-route-id="@item.SkillCategoryId" class="btn btn-sm btn-soft">
+                                    <i class="bi bi-pencil me-1"></i> Güncelle
+                                </a>
+                                <form asp-action="DeleteSkillCategory" asp-route-id="@item.SkillCategoryId" method="post" class="d-inline js-delete"
+                                      data-message="&quot;@item.Title&quot; kategorisi ve içindeki @item.Skills.Count yetenek silinecek.">
+                                    <button type="submit" class="btn btn-sm btn-soft-danger"><i class="bi bi-trash me-1"></i> Sil</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

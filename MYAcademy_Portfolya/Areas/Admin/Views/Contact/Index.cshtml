@@ -1,0 +1,71 @@
+﻿@model MYAcademy_Portfolya.Entites.Contact
+@{
+    ViewData["Title"] = "İletişim Bilgileri";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<h3 class="mb-4">İletişim Bilgileri</h3>
+
+@if (ViewBag.Success != null)
+{
+    <div class="alert alert-success">@ViewBag.Success</div>
+}
+
+<form method="post">
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+
+    <div class="row g-4 align-items-stretch">
+
+        <!-- SOL: Metinler -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold">Metinler</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label">Açıklama</label>
+                        <textarea asp-for="Description" class="form-control" rows="5"></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Alt Açıklama (örn: Genellikle 24 saat içinde yanıt verilir.)</label>
+                        <input type="text" asp-for="SubDescription" class="form-control" />
+                        <span asp-validation-for="SubDescription" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SAĞ: İletişim kanalları -->
+        <div class="col-lg-6">
+            <div class="card h-100 shadow-sm">
+                <div class="card-header fw-bold">İletişim Kanalları</div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-envelope"></i> E-posta</label>
+                        <input type="text" asp-for="Emil" class="form-control" />
+                        <span asp-validation-for="Emil" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-geo-alt"></i> Konum</label>
+                        <input type="text" asp-for="Location" class="form-control" />
+                        <span asp-validation-for="Location" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-linkedin"></i> LinkedIn</label>
+                        <input type="text" asp-for="Linkein" class="form-control" placeholder="https://linkedin.com/in/..." />
+                        <span asp-validation-for="Linkein" class="text-danger small"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label"><i class="bi bi-github"></i> GitHub</label>
+                        <input type="text" asp-for="Github" class="form-control" placeholder="https://github.com/..." />
+                        <span asp-validation-for="Github" class="text-danger small"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="text-end mt-4">
+        <button type="submit" class="btn btn-primary px-5"><i class="bi bi-save"></i> Kaydet</button>
+    </div>
+</form>

@@ -1,7 +1,10 @@
+using MYAcademy_Portfolya.Context;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddDbContext<PortfolioContext>();
 
 var app = builder.Build();
 
@@ -20,10 +23,15 @@ app.UseAuthorization();
 
 app.MapStaticAssets();
 
+// Admin alanı: /Admin → Dashboard
+app.MapControllerRoute(
+    name: "areas",
+    pattern: "{area:exists}/{controller=Dashboard}/{action=Index}/{id?}");
+
+// Site: / → Portfolyo ana sayfası
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}")
+    pattern: "{controller=Default}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

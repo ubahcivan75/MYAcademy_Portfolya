@@ -1,0 +1,43 @@
+﻿@model MYAcademy_Portfolya.Entites.Category
+@{
+    ViewData["Title"] = "Kategori Güncelle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="form-card">
+    <form asp-area="Admin" asp-action="UpdateCategory" method="post">
+        <input type="hidden" asp-for="CategoryId" />
+
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-pencil"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Kategoriyi Güncelle</h5>
+                <small class="text-secondary">Ad değişikliği bu kategorideki tüm projelere yansır.</small>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+            <div class="row">
+                <div class="col-md-8">
+                    <label asp-for="CategoryName" class="form-label">Kategori Adı <span class="req">*</span></label>
+                    <div class="input-icon-wrap">
+                        <i class="bi bi-tag"></i>
+                        <input asp-for="CategoryName" class="form-control" maxlength="50" required />
+                    </div>
+                    <span asp-validation-for="CategoryName"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-card-footer">
+            <a asp-area="Admin" asp-action="Index" class="btn btn-soft">
+                <i class="bi bi-arrow-left me-1"></i> Vazgeç
+            </a>
+            <button type="submit" class="btn btn-accent">
+                <i class="bi bi-check2-circle me-1"></i> Değişiklikleri Kaydet
+            </button>
+        </div>
+    </form>
+</div>

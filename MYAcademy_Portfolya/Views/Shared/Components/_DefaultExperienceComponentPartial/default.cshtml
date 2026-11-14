@@ -1,0 +1,128 @@
+﻿@model List<MYAcademy_Portfolya.Entites.Experience>
+
+@{
+    // Her kayıtta sırayla değişecek renk ve ikonlar
+    string[] colors = { "bg-icon-purple", "bg-icon-blue", "bg-icon-peach" };
+    string[] icons = { "bi-building", "bi-pc-display", "bi-award" };
+    int index = 0;
+}
+
+<!-- Work Experience Section -->
+<section id="experience">
+    <div class="container">
+        <div class="text-center mb-5 reveal-on-scroll">
+            <span class="section-eyebrow">PROFESYONEL YOLCULUK</span>
+            <h2 class="section-title">Deneyimlerim</h2>
+            <p class="section-subtitle">Gerçek dünya problemlerini çözerken edindiğim tecrübeler.</p>
+        </div>
+
+        <div class="timeline-container">
+            @foreach (var item in Model)
+            {
+                bool isLeft = index % 2 == 0;
+                string color = colors[index % colors.Length];
+                string icon = icons[index % icons.Length];
+
+                // Çalışma tipine göre rozet rengi
+                string typeBadge = item.WorkType switch
+                {
+                    "Tam Zamanlı" => "bg-success-subtle text-success border-success-subtle",
+                    "Yarı Zamanlı" => "bg-primary-subtle text-primary border-primary-subtle",
+                    "Staj" => "bg-warning-subtle text-warning border-warning-subtle",
+                    "Freelance" => "bg-info-subtle text-info border-info-subtle",
+                    _ => "bg-secondary-subtle text-secondary border-secondary-subtle"
+                };
+
+                // Açıklamayı satırlara böl: her satır bir madde olsun
+                var lines = (item.Description ?? "")
+                    .Split('\n', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+
+                <div class="timeline-item row align-items-center g-4 reveal-on-scroll">
+
+                    @if (isLeft)
+                    {
+                        <!-- SOL: KART -->
+                        <div class="col-lg-6 timeline-left order-2 order-lg-1">
+                            <div class="timeline-content-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge-year @color">
+                                        <i class="bi bi-briefcase"></i> @item.Period
+                                    </span>
+                                    <span class="badge border rounded-pill px-3 py-1 small @typeBadge">@item.WorkType</span>
+                                </div>
+                                <h4 class="fs-5 fw-bold mb-1">@item.Title</h4>
+                                <div class="text-primary fw-semibold small mb-3">@item.CompanyName</div>
+
+                                @if (lines.Length > 1)
+                                {
+                                    <ul class="text-secondary small ps-3 mb-0" style="line-height: 1.6;">
+                                        @foreach (var line in lines)
+                                        {
+                                            <li>@line</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-secondary small mb-0" style="line-height: 1.6;">@item.Description</p>
+                                }
+                            </div>
+                        </div>
+
+                        <!-- ORTA -->
+                        <div class="timeline-marker">
+                            <i class="bi @icon"></i>
+                        </div>
+
+                        <!-- SAĞ: ALT BAŞLIK -->
+                        <div class="col-lg-6 timeline-right order-1 order-lg-2 d-none d-lg-block">
+                            <div class="text-secondary small fst-italic">@item.SideTitle</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- SOL: ALT BAŞLIK -->
+                        <div class="col-lg-6 timeline-left d-none d-lg-block">
+                            <div class="text-secondary small fst-italic">@item.SideTitle</div>
+                        </div>
+
+                        <!-- ORTA -->
+                        <div class="timeline-marker">
+                            <i class="bi @icon"></i>
+                        </div>
+
+                        <!-- SAĞ: KART -->
+                        <div class="col-lg-6 timeline-right">
+                            <div class="timeline-content-card">
+                                <div class="d-flex justify-content-between align-items-start mb-2">
+                                    <span class="badge-year @color">
+                                        <i class="bi bi-briefcase"></i> @item.Period
+                                    </span>
+                                    <span class="badge border rounded-pill px-3 py-1 small @typeBadge">@item.WorkType</span>
+                                </div>
+                                <h4 class="fs-5 fw-bold mb-1">@item.Title</h4>
+                                <div class="text-primary fw-semibold small mb-3">@item.CompanyName</div>
+
+                                @if (lines.Length > 1)
+                                {
+                                    <ul class="text-secondary small ps-3 mb-0" style="line-height: 1.6;">
+                                        @foreach (var line in lines)
+                                        {
+                                            <li>@line</li>
+                                        }
+                                    </ul>
+                                }
+                                else
+                                {
+                                    <p class="text-secondary small mb-0" style="line-height: 1.6;">@item.Description</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                index++;
+            }
+        </div>
+    </div>
+</section>

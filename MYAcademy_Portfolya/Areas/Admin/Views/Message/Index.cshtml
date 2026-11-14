@@ -1,0 +1,215 @@
+﻿@model List<MYAcademy_Portfolya.Entites.Message>
+@{
+    ViewData["Title"] = "Gelen Kutusu";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+    var queryString = Context.Request.QueryString; // ?search=...&sort=... (filtreleri korumak için)
+}
+
+<style>
+    .msg-unread td {
+        font-weight: 600;
+        background-color: #f4f8ff;
+    }
+
+    .msg-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .msg-body {
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
+</style>
+
+<!-- Başlık + sayaçlar -->
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3 class="mb-0">
+        <i class="bi bi-inbox"></i> Gelen Kutusu
+        @if (ViewBag.UnreadCount > 0)
+        {
+            <span class="badge bg-danger rounded-pill align-middle fs-6">@ViewBag.UnreadCount okunmamış</span>
+        }
+    </h3>
+    <span class="text-muted">Toplam @ViewBag.TotalCount mesaj</span>
+</div>
+
+<!-- Arama / filtre / sıralama -->
+<form method="get" class="card shadow-sm mb-4">
+    <div class="card-body row g-2 align-items-end">
+        <div class="col-md-5">
+            <label class="form-label small text-muted">Ara (gönderen, e-posta veya konu)</label>
+            <input type="text" name="search" value="@ViewBag.Search" class="form-control" placeholder="Örn: Ahmet veya İş Birliği" />
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small text-muted">Durum</label>
+            <select name="status" class="form-select">
+                <option value="all" selected="@(ViewBag.Status == "all")">Tümü</option>
+                <option value="unread" selected="@(ViewBag.Status == "unread")">Okunmamış</option>
+                <option value="read" selected="@(ViewBag.Status == "read")">Okunmuş</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label small text-muted">Sıralama</label>
+            <select name="sort" class="form-select">
+                <option value="desc" selected="@(ViewBag.Sort == "desc")">En yeni</option>
+                <option value="asc" selected="@(ViewBag.Sort == "asc")">En eski</option>
+            </select>
+        </div>
+        <div class="col-md-3 d-flex gap-2">
+            <button type="submit" class="btn btn-primary flex-fill"><i class="bi bi-funnel"></i> Filtrele</button>
+            <a href="/Admin/Message/Index" class="btn btn-outline-secondary">Temizle</a>
+        </div>
+    </div>
+</form>
+
+<!-- Mesaj tablosu -->
+<div class="card shadow-sm">
+    <div class="card-body p-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th style="width:40px;"></th>
+                    <th>Gönderen</th>
+                    <th>Konu</th>
+                    <th style="width:150px;">Tarih</th>
+                    <th style="width:110px;">Durum</th>
+                    <th style="width:230px;">İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr><td colspan="6" class="text-center text-muted py-4">Mesaj bulunamadı.</td></tr>
+                }
+
+                @foreach (var item in Model)
+                {
+                    <tr class="@(item.IsRead ? "" : "msg-unread")">
+                        <td>
+                            <span class="msg-dot @(item.IsRead ? "bg-secondary opacity-25" : "bg-primary")"></span>
+                        </td>
+                        <td>
+                            @item.NameSurname
+                            <div class="small text-muted fw-normal">@item.Email</div>
+                        </td>
+                        <td>@item.Subject</td>
+                        <td class="small">@item.SendDate.ToString("dd.MM.yyyy HH:mm")</td>
+                        <td>
+                            @if (item.IsRead)
+                            {
+                                <span class="badge bg-secondary">Okundu</span>
+                            }
+                            else
+                            {
+                                <span class="badge bg-primary">Yeni</span>
+                            }
+                        </td>
+                        <td>
+                            <!-- Detay modalını açar -->
+                            <button type="button" class="btn btn-sm btn-info text-white"
+                                    data-bs-toggle="modal" data-bs-target="#msgModal-@item.MessageId">
+                                <i class="bi bi-eye"></i> Oku
+                            </button>
+
+                            <!-- Silme onay modalını açar -->
+                            <button type="button" class="btn btn-sm btn-danger"
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                    data-id="@item.MessageId" data-subject="@item.Subject">
+                                <i class="bi bi-trash"></i> Sil
+                            </button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- ============ MESAJ DETAY MODALLARI (her mesaj için bir tane) ============ -->
+@foreach (var item in Model)
+{
+    <div class="modal fade" id="msgModal-@item.MessageId" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">@item.Subject</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Kapat"></button>
+                </div>
+                <div class="modal-body">
+                    <dl class="row mb-3">
+                        <dt class="col-sm-3">Gönderen</dt>
+                        <dd class="col-sm-9">@item.NameSurname</dd>
+
+                        <dt class="col-sm-3">E-posta</dt>
+                        <dd class="col-sm-9"><a href="mailto:@item.Email">@item.Email</a></dd>
+
+                        <dt class="col-sm-3">Tarih</dt>
+                        <dd class="col-sm-9">@item.SendDate.ToString("dd MMMM yyyy, HH:mm")</dd>
+                    </dl>
+                    <hr />
+                    <!-- Salt okunur içerik: input/textarea değil, düz metin -->
+                    <div class="msg-body">@item.MessageDetail</div>
+                </div>
+                <div class="modal-footer">
+                    <a href="mailto:@item.Email?subject=Re: @item.Subject" class="btn btn-outline-primary">
+                        <i class="bi bi-reply"></i> Yanıtla
+                    </a>
+                    <a href="/Admin/Message/ToggleRead/@item.MessageId@queryString" class="btn btn-outline-secondary">
+                        @(item.IsRead ? "Okunmadı olarak işaretle" : "Okundu olarak işaretle")
+                    </a>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- ============ SİLME ONAY MODALI (tek, ortak) ============ -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="bi bi-exclamation-triangle"></i> Mesajı Sil</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Kapat"></button>
+            </div>
+            <div class="modal-body">
+                <strong id="deleteSubject"></strong> konulu mesajı silmek istediğine emin misin?
+                <div class="text-danger small mt-2">Bu işlem geri alınamaz.</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Vazgeç</button>
+                <form id="deleteForm" method="post">
+                    <button type="submit" class="btn btn-danger">Evet, Sil</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Silme modalı açılırken hangi butona basıldıysa onun id ve konusunu modala yaz
+    document.getElementById('deleteModal').addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const id = button.getAttribute('data-id');
+        const subject = button.getAttribute('data-subject');
+
+        document.getElementById('deleteSubject').textContent = '"' + subject + '"';
+        document.getElementById('deleteForm').action =
+            '/Admin/Message/DeleteMessage/' + id + window.location.search; // filtreler korunur
+    });
+</script>
+@if (ViewBag.OpenId != null)
+{
+    <script>
+        // Dashboard'dan gelindiyse ilgili mesajın modalını otomatik aç
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalEl = document.getElementById('msgModal-@ViewBag.OpenId');
+            if (modalEl) {
+                new bootstrap.Modal(modalEl).show();
+            }
+        });
+    </script>
+}

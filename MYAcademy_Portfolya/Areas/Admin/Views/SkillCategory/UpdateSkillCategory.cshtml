@@ -1,0 +1,235 @@
+﻿@model MYAcademy_Portfolya.Entites.SkillCategory
+@{
+    ViewData["Title"] = "Yetenek Kategorisini Güncelle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+
+    var workTypes = new List<string> { "Tam Zamanlı", "Yarı Zamanlı", "Staj", "Freelance", "Uzaktan", "Hibrit" };
+  
+ 
+}
+
+@section Styles {
+    <style>
+        .form-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .form-card-header {
+            padding: 20px 26px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .form-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--pastel-purple);
+            color: var(--primary-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .form-card-body {
+            padding: 26px;
+        }
+
+        .form-card-footer {
+            padding: 16px 26px;
+            border-top: 1px solid var(--border-color);
+            background: #FAFBFE;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .form-label {
+            font-size: 0.83rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+            .form-label .req {
+                color: #c0342b;
+            }
+
+        .form-control, .form-select {
+            border-radius: 10px;
+            border: 1px solid #DCE1ED;
+            padding: 9px 13px;
+            font-size: 0.88rem;
+        }
+
+        .input-icon-wrap {
+            position: relative;
+        }
+
+            .input-icon-wrap i {
+                position: absolute;
+                left: 13px;
+                top: 50%;
+                transform: translateY(-50%);
+                color: var(--text-secondary);
+                pointer-events: none;
+            }
+
+            .input-icon-wrap .form-control,
+            .input-icon-wrap .form-select {
+                padding-left: 38px;
+            }
+
+        .status-box {
+            border: 1px solid #DCE1ED;
+            border-radius: 10px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .form-switch .form-check-input {
+            width: 2.6em;
+            height: 1.35em;
+            cursor: pointer;
+        }
+
+        .form-check-input:checked {
+            background-color: var(--primary-accent);
+            border-color: var(--primary-accent);
+        }
+
+        .btn-accent {
+            background: var(--primary-accent);
+            border: 1px solid var(--primary-accent);
+            color: #fff;
+            border-radius: 12px;
+            font-weight: 600;
+            padding: 9px 20px;
+            box-shadow: 0 4px 12px rgba(130, 118, 217, 0.25);
+        }
+
+            .btn-accent:hover {
+                background: var(--primary-accent-hover);
+                color: #fff;
+            }
+
+        .btn-soft {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            border-radius: 12px;
+            font-weight: 500;
+            padding: 9px 18px;
+        }
+
+            .btn-soft:hover {
+                background: #F8F9FD;
+                color: var(--primary-accent);
+            }
+
+        .field-validation-error {
+            font-size: 0.78rem;
+            color: #c0342b;
+        }
+    </style>
+}
+
+<div class="form-card">
+    <form asp-area="Admin" asp-action="UpdateSkillCategory" method="post">
+        <input type="hidden" asp-for="SkillCategoryId" />
+
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-briefcase"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Kategoriyi Güncelle</h5>
+                <small class="text-secondary">Mevcut kategori bilgilerini düzenleyip kaydedin.</small>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+           
+            <div class="row g-4">
+    <div class="col-md-8">
+        <label asp-for="Title" class="form-label">Kategori Adı <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-tag"></i>
+            <input asp-for="Title" class="form-control" placeholder="Örn: Backend Development" required />
+        </div>
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    <div class="col-md-4">
+        <label asp-for="DisplayOrder" class="form-label">Sıra <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-sort-numeric-down"></i>
+            <input asp-for="DisplayOrder" type="number" min="0" class="form-control" required />
+        </div>
+        <span asp-validation-for="DisplayOrder"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Icon" class="form-label">İkon <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-emoji-smile"></i>
+            <input asp-for="Icon" id="iconInput" class="form-control" placeholder="Örn: bi-database" required />
+        </div>
+        <small class="text-secondary">
+            Önizleme: <i id="iconPreview" class="bi @Model?.Icon fs-5 align-middle"></i>
+            · İkonları <a href="https://icons.getbootstrap.com" target="_blank">icons.getbootstrap.com</a> adresinden seçin.
+        </small>
+        <span asp-validation-for="Icon"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="Color" class="form-label">Renk <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-palette"></i>
+            <select asp-for="Color" class="form-select" required>
+                <option value="">Seçiniz...</option>
+                <option value="bg-icon-purple">Mor</option>
+                <option value="bg-icon-blue">Mavi</option>
+                <option value="bg-icon-mint">Mint</option>
+                <option value="bg-icon-peach">Şeftali</option>
+            </select>
+        </div>
+        <span asp-validation-for="Color"></span>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label">Açıklama <span class="req">*</span></label>
+        <textarea asp-for="Description" class="form-control" rows="3"
+                  placeholder="Örn: Güvenli, modüler ve yüksek performanslı sunucu taraflı mimariler." required></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+</div>
+          
+        </div>
+
+        <div class="form-card-footer">
+            <a asp-area="Admin" asp-action="SkillCategoryList" class="btn btn-soft">
+                <i class="bi bi-arrow-left me-1"></i> Vazgeç
+            </a>
+            <button type="submit" class="btn btn-accent">
+                <i class="bi bi-check2-circle me-1"></i> Değişiklikleri Kaydet
+            </button>
+        </div>
+    </form>
+</div>
+@section Scripts {
+    <script>
+        const iconInput = document.getElementById("iconInput");
+        const iconPreview = document.getElementById("iconPreview");
+        iconInput.addEventListener("input", () => iconPreview.className = "bi " + iconInput.value.trim() + " fs-5 align-middle");
+    </script>
+}
+
+

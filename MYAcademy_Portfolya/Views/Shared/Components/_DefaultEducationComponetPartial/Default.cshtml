@@ -1,0 +1,80 @@
+﻿@model List<MYAcademy_Portfolya.Entites.Education>
+
+<!-- Education Section -->
+<section id="education" style="background-color: var(--bg-secondary);">
+    <div class="container">
+        <div class="text-center mb-5 reveal-on-scroll">
+            <span class="section-eyebrow">AKADEMİK YOLCULUĞUM</span>
+            <h2 class="section-title">Eğitim Hayatım</h2>
+            <p class="section-subtitle">Yazılım dünyasına uzanan yolculuğumun akademik temelleri.</p>
+        </div>
+
+        <div class="timeline-container">
+            @{
+                int index = 0;
+            }
+
+            @foreach (var item in Model)
+            {
+                bool isLeft = index % 2 == 0;
+                string badgeColor = isLeft ? "bg-icon-purple" : "bg-icon-mint";
+                string icon = isLeft ? "bi-mortarboard" : "bi-book";
+
+                <div class="timeline-item row align-items-center g-4 reveal-on-scroll">
+
+                    @if (isLeft)
+                    {
+                        <!-- SOL: KART -->
+                        <div class="col-lg-6 timeline-left order-2 order-lg-1">
+                            <div class="timeline-content-card">
+                                <span class="badge-year @badgeColor mb-2">
+                                    <i class="bi bi-calendar3"></i> @item.Period
+                                </span>
+                                <h4 class="fs-5 fw-bold mb-1">@item.Title</h4>
+                                <div class="text-primary fw-semibold small mb-2">@item.SubTitle</div>
+                                <p class="text-secondary small mb-0">@item.Description</p>
+                            </div>
+                        </div>
+
+                        <!-- ORTA: MARKER -->
+                        <div class="timeline-marker">
+                            <i class="bi @icon"></i>
+                        </div>
+
+                        <!-- SAĞ: KONUM -->
+                        <div class="col-lg-6 timeline-right order-1 order-lg-2 d-none d-lg-block">
+                            <div class="text-secondary fst-italic small">İstanbul, Türkiye</div>
+                        </div>
+                    }
+                    else
+                    {
+                        <!-- SOL: KONUM -->
+                        <div class="col-lg-6 timeline-left d-none d-lg-block text-lg-end">
+                            <div class="text-secondary fst-italic small">İstanbul, Türkiye</div>
+                        </div>
+
+                        <!-- ORTA: MARKER -->
+                        <div class="timeline-marker">
+                            <i class="bi @icon"></i>
+                        </div>
+
+                        <!-- SAĞ: KART -->
+                        <div class="col-lg-6 timeline-right">
+                            <div class="timeline-content-card">
+                                <span class="badge-year @badgeColor mb-2">
+                                    <i class="bi bi-calendar3"></i> @item.Period
+                                </span>
+                                <h4 class="fs-5 fw-bold mb-1">@item.Title</h4>
+                                <div class="text-primary fw-semibold small mb-2">@item.SubTitle</div>
+                                <p class="text-secondary small mb-0">@item.Description</p>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+                index++;
+            }
+        </div>
+    </div>
+</section>

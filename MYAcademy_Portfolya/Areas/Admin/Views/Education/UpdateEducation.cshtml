@@ -1,0 +1,28 @@
+﻿@model MYAcademy_Portfolya.Entites.Education
+@{
+    ViewData["Title"] = "Eğitim Güncelle";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+<div class="form-card">
+    <form asp-action="UpdateEducation" method="post">
+        <input type="hidden" asp-for="EducationId" />
+
+        <div class="form-card-header">
+            <div class="form-card-icon"><i class="bi bi-pencil"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Eğitim Güncelle</h5>
+                <small class="text-secondary">@Model.Title</small>
+            </div>
+        </div>
+
+        <div class="form-card-body">
+            <partial name="_EducationForm" model="Model" />
+        </div>
+
+        <div class="form-card-footer">
+            <a asp-action="Index" class="btn btn-soft"><i class="bi bi-arrow-left me-1"></i> Vazgeç</a>
+            <button type="submit" class="btn btn-accent"><i class="bi bi-check2 me-1"></i> Güncelle</button>
+        </div>
+    </form>
+</div>

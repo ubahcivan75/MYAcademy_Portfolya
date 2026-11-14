@@ -1,0 +1,51 @@
+﻿@model MYAcademy_Portfolya.Entites.Education
+
+<div asp-validation-summary="ModelOnly" class="alert alert-danger py-2"></div>
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <label asp-for="Title" class="form-label">Okul / Kurum <span class="req">*</span></label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-building"></i>
+            <input asp-for="Title" class="form-control" placeholder="Örn: İstanbul Teknik Üniversitesi" required />
+        </div>
+        <span asp-validation-for="Title"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label asp-for="SubTitle" class="form-label">Bölüm</label>
+        <div class="input-icon-wrap">
+            <i class="bi bi-book"></i>
+            <input asp-for="SubTitle" class="form-control" placeholder="Örn: Bilgisayar Mühendisliği" />
+        </div>
+        <span asp-validation-for="SubTitle"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="StartDate" class="form-label">Başlangıç <span class="req">*</span></label>
+        <input asp-for="StartDate" type="date" class="form-control" required />
+        <span asp-validation-for="StartDate"></span>
+    </div>
+
+    <div class="col-md-3">
+        <label asp-for="EndDate" class="form-label">Bitiş</label>
+        <input asp-for="EndDate" type="date" class="form-control" />
+        <small class="text-secondary">Devam ediyorsa boş bırak.</small>
+        <span asp-validation-for="EndDate"></span>
+    </div>
+
+    <div class="col-md-6">
+        <label class="form-label d-block">Yayın Durumu</label>
+        <div class="form-check form-switch mt-2">
+            <input asp-for="IsActive" class="form-check-input" type="checkbox" role="switch" />
+            <label asp-for="IsActive" class="form-check-label">Sitede göster (aktif)</label>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <label asp-for="Description" class="form-label">Açıklama <span class="req">*</span></label>
+        <textarea asp-for="Description" class="form-control" rows="5"
+                  placeholder="Eğitiminiz hakkında kısa bilgi..." required></textarea>
+        <span asp-validation-for="Description"></span>
+    </div>
+</div>

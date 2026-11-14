@@ -1,0 +1,83 @@
+﻿@model List<MYAcademy_Portfolya.Entites.SkillCategory>
+
+@{
+    int total = Model.Count;
+    int remainder = total % 3;   // Son satırda kaç kart kalıyor
+    int index = 0;
+}
+
+<!-- Technical Skills Section -->
+<section id="skills" style="background-color: var(--bg-secondary);">
+    <div class="container">
+        <div class="text-center mb-5 reveal-on-scroll">
+            <span class="section-eyebrow">TEKNİK YETKİNLİKLER</span>
+            <h2 class="section-title">Yeteneklerim</h2>
+            <p class="section-subtitle">Fikirleri çalışan yazılımlara dönüştürürken kullandığım teknolojiler.</p>
+        </div>
+
+        <div class="row g-4">
+            @foreach (var category in Model)
+            {
+                // Son satırdaki kartlar boşluk kalmasın diye genişler
+                bool inLastRow = remainder > 0 && index >= total - remainder;
+                string colClass = !inLastRow ? "col-lg-4 col-md-6"
+                                : remainder == 2 ? "col-lg-6 col-md-6"
+                                : "col-lg-12";
+
+                <div class="@colClass reveal-on-scroll">
+                    <div class="skill-group-card">
+                        <div class="d-flex align-items-center gap-3 mb-3">
+                            <div class="float-icon-box @category.Color">
+                                <i class="bi @category.Icon"></i>
+                            </div>
+                            <h4 class="fs-5 fw-bold mb-0">@category.Title</h4>
+                        </div>
+                        <p class="text-secondary small mb-4">@category.Description</p>
+
+                        @if (!category.Skills.Any())
+                        {
+                            <p class="text-secondary small mb-0">Bu kategoride henüz yetenek yok.</p>
+                        }
+
+                        @foreach (var skill in category.Skills
+                                                       .OrderByDescending(s => s.Percentage)
+                                                       .ThenBy(s => s.Name))
+                        {
+                            <div class="skill-progress-item">
+                                <div class="skill-progress-head">
+                                    <span>@skill.Name</span>
+                                    <span class="percent">%@skill.Percentage</span>
+                                </div>
+                                <div class="skill-progress-track" role="progressbar"
+                                     aria-label="@skill.Name" aria-valuenow="@skill.Percentage"
+                                     aria-valuemin="0" aria-valuemax="100">
+                                    <div class="skill-progress-fill" data-percent="@skill.Percentage"></div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                index++;
+            }
+        </div>
+    </div>
+</section>
+
+<script>
+    // Çubuklar ekrana girince 0'dan yüzdesine kadar dolsun
+    document.addEventListener('DOMContentLoaded', function() {
+        const bars = document.querySelectorAll('.skill-progress-fill');
+
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.style.width = entry.target.dataset.percent + '%';
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.3 });
+
+        bars.forEach(function(bar) { observer.observe(bar); });
+    });
+</script>

@@ -1,0 +1,150 @@
+﻿@model List<MYAcademy_Portfolya.Entites.Category>
+@{
+    ViewData["Title"] = "Proje Kategorileri";
+    Layout = "~/Areas/Admin/Views/AdminLayout/Index.cshtml";
+}
+
+@section Styles {
+    <style>
+        .list-card {
+            background: #fff;
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-subtle);
+        }
+
+        .list-card-header {
+            padding: 20px 26px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .list-card-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--pastel-purple);
+            color: var(--primary-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.25rem;
+        }
+
+        .exp-table th {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: .04em;
+            color: var(--text-secondary);
+            font-weight: 600;
+            background: #FAFBFE;
+            padding: 12px 16px;
+        }
+
+        .exp-table td {
+            padding: 14px 16px;
+            font-size: 0.88rem;
+        }
+
+        .btn-soft-danger {
+            background: #fff;
+            border: 1px solid #F3C9C6;
+            color: #c0342b;
+            border-radius: 10px;
+        }
+
+            .btn-soft-danger:hover {
+                background: #FDF1F0;
+                color: #a32a22;
+            }
+
+            .btn-soft-danger:disabled {
+                opacity: .45;
+                cursor: not-allowed;
+            }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: var(--text-secondary);
+        }
+    </style>
+}
+<div class="list-card">
+    <div class="list-card-header">
+        <div class="d-flex align-items-center gap-3">
+            <div class="list-card-icon"><i class="bi bi-tags"></i></div>
+            <div>
+                <h5 class="mb-0 fw-bold">Proje Kategorileri</h5>
+                <small class="text-secondary">Toplam @Model.Count kategori</small>
+            </div>
+        </div>
+
+        <a asp-area="Admin" asp-controller="Category" asp-action="CreateCategory" class="btn btn-accent">
+            <i class="bi bi-plus-lg me-1"></i> Yeni Kategori Ekle
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="empty-state">
+            <i class="bi bi-tags fs-1 d-block mb-2"></i>
+            Henüz kategori eklenmedi. Proje ekleyebilmek için önce bir kategori oluştur.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table exp-table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Kategori</th>
+                        <th>Proje Sayısı</th>
+                        <th class="text-end">İşlemler</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        int projectCount = item.Projects.Count;
+
+                        <tr>
+                            <td class="fw-semibold">@item.CategoryName</td>
+                            <td>
+                                <span class="badge bg-light text-dark border">@projectCount proje</span>
+                            </td>
+                            <td class="text-end text-nowrap">
+                                <a asp-action="UpdateCategory" asp-route-id="@item.CategoryId" class="btn btn-sm btn-soft">
+                                    <i class="bi bi-pencil me-1"></i> Güncelle
+                                </a>
+
+                                @if (projectCount > 0)
+                                {
+                                    <!-- İçinde proje varsa silme butonu pasif -->
+                                    <span title="İçinde proje olan kategori silinemez" class="d-inline-block">
+                                        <button type="button" class="btn btn-sm btn-soft-danger" disabled>
+                                            <i class="bi bi-trash me-1"></i> Sil
+                                        </button>
+                                    </span>
+                                }
+                                else
+                                {
+                                    <form asp-action="DeleteCategory" asp-route-id="@item.CategoryId" method="post" class="d-inline js-delete"
+                                          data-message="&quot;@item.CategoryName&quot; kategorisi silinecek. Emin misin?">
+                                        <button type="submit" class="btn btn-sm btn-soft-danger">
+                                            <i class="bi bi-trash me-1"></i> Sil
+                                        </button>
+                                    </form>
+                                }
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
